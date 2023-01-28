@@ -1,24 +1,29 @@
-const getTokenFromHeaders =require('../utils/getTokenFromHeader')
+const getTokenFromHeaders = require("../utils/getTokenFromHeader");
+const verifyToken = require("../utils/verifyToken");
+const appErr=require("../utils/appErr"); 
+const isLogin = (req, res, next) => {
+  //get token from headers
+  const token = getTokenFromHeaders(req);
 
-const isLogin=(req,res,next) => {
+//verify the token 
 
-const token = getTokenFromHeaders(req);
+const decodedUser=verifyToken(token);
+req.userAuth=decodedUser.id;
 
-if (!token) {
-    return res.json({ 
-
-        message:"there is no token attached to the header"
-    })
-}
-else{
+// console.log(decodedUser);
+  if (!decodedUser) {
+    return next(appErr("invalid/expired token,please log in again",500));
+  } else {
     next();
-}
-
-
-}
+  }
 
 
 
 
 
-module.exports=isLogin;
+
+
+
+};
+
+module.exports = isLogin;

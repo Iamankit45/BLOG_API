@@ -17,7 +17,7 @@ userRouter.post("/register", userRegisterCtrl);
 userRouter.post("/login", userLoginCtrl);
 
 //GET/api/v1/users/:id
-userRouter.get("/profile/:id",isLogin,userProfileCtrl);
+userRouter.get("/profile/",isLogin,userProfileCtrl);
 
 //GET/api/v1/users/
 userRouter.get("/", usersCtrl);
