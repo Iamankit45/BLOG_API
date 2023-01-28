@@ -6,6 +6,12 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
+//middleware
+
+app.use(express.json()); //pass incoming payload 
+
+
+
 const userRouter = require("./routes/users/userRoutes");
 const postRouter = require("./routes/posts/postRoutes");
 const categoryRouter = require("./routes/categories/categoryRoutes");
