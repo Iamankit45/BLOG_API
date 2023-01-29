@@ -1,6 +1,7 @@
+const path =require('path');
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({ path: "./config/config.env" });
 const dbConnect = require("./config/db");
 const app = express();
 const globalErrHandler = require("./middlewares/globalErrHandler");
