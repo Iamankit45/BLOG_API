@@ -76,7 +76,7 @@ const userLoginCtrl = async (req, res) => {
 const userProfileCtrl = async (req, res) => {
   // console.log(req.headers);
 
-  // console.log(req.userAuth);
+  console.log(req.userAuth);
   // const { id } = req.params;
   try {
     const token = getTokenFromHeader(req);
@@ -123,6 +123,48 @@ const updateUserCtrl = async (req, res) => {
     res.json(error.message);
   }
 };
+
+const profilePhotoUploadCtrl = async (req, res) => {
+  // console.log(req.file)
+  try {
+  
+const userToUpdate = await User.findById(req.userAuth);
+
+if (!userToUpdate) {
+  return next(appErr("user not found",403));
+  
+}
+if (userToUpdate.isBlocked) {
+  return next(appErr("action not allowed",403));
+}
+
+
+if (req.file) {
+  
+  await User.findByIdAndUpdate(req.userAuth,{
+
+    $set:{
+      profilePhoto:req.file.path,
+    }
+  }
+  ,{
+    new:true,
+  })
+
+  res.json({
+    status: "success",
+    data: "you have successfully uploaded profile photo ",
+    
+  });
+}
+
+
+  } catch (error) {
+    next(appErr(error.message,500 ))
+  }
+};
+
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
@@ -130,4 +172,5 @@ module.exports = {
   usersCtrl,
   deleteUserCtrl,
   updateUserCtrl,
+  profilePhotoUploadCtrl 
 };

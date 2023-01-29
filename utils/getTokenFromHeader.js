@@ -1,23 +1,11 @@
+const getTokenFromHeaders = (req) => {
+  const token = req.headers.authorization.split(" ")[1];
 
-const getTokenFromHeaders =(req)=>{
-
-
-
-    const token = req.headers.authorization.split(" ")[1];
-
-if (token!==undefined) {
+  if (token !== undefined) {
     return token;
-}
-else{
+  } else {
     return false;
-}
+  }
+};
 
-
-}
-
-
-
-module.exports =getTokenFromHeaders;
-
-
-
+module.exports = getTokenFromHeaders;
