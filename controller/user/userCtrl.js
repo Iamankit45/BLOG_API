@@ -91,6 +91,37 @@ const userProfileCtrl = async (req, res) => {
   }
 };
 
+const whoViewedMyProfileCtrl = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    const userWhoViewed = await User.findById(req.userAuth);
+
+    //check if user and userwhoviewed are found
+
+    if (user && userWhoViewed) {
+      //check if user and userwhoviewed is already in the users viewers array
+      const isUserAlreadyViewed = user.viewers.find(
+        (viewer) => viewer.toString() === userWhoViewed._id.toString()
+      );
+
+      if (isUserAlreadyViewed) {
+        return next(appErr("you already viewed this profile"));
+      } else {
+        user.viewers.push(userWhoViewed._id);
+
+        await user.save();
+        res.json({
+          status: "success",
+          data: "you have successfully viewed this profile",
+        });
+      }
+    }
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
 const usersCtrl = async (req, res) => {
   try {
     res.json({
@@ -127,43 +158,37 @@ const updateUserCtrl = async (req, res) => {
 const profilePhotoUploadCtrl = async (req, res) => {
   // console.log(req.file)
   try {
-  
-const userToUpdate = await User.findById(req.userAuth);
+    const userToUpdate = await User.findById(req.userAuth);
 
-if (!userToUpdate) {
-  return next(appErr("user not found",403));
-  
-}
-if (userToUpdate.isBlocked) {
-  return next(appErr("action not allowed",403));
-}
-
-
-if (req.file) {
-  
-  await User.findByIdAndUpdate(req.userAuth,{
-
-    $set:{
-      profilePhoto:req.file.path,
+    if (!userToUpdate) {
+      return next(appErr("user not found", 403));
     }
-  }
-  ,{
-    new:true,
-  })
+    if (userToUpdate.isBlocked) {
+      return next(appErr("action not allowed", 403));
+    }
 
-  res.json({
-    status: "success",
-    data: "you have successfully uploaded profile photo ",
-    
-  });
-}
+    if (req.file) {
+      await User.findByIdAndUpdate(
+        req.userAuth,
+        {
+          $set: {
+            profilePhoto: req.file.path,
+          },
+        },
+        {
+          new: true,
+        }
+      );
 
-
+      res.json({
+        status: "success",
+        data: "you have successfully uploaded profile photo ",
+      });
+    }
   } catch (error) {
-    next(appErr(error.message,500 ))
+    next(appErr(error.message, 500));
   }
 };
-
 
 module.exports = {
   userRegisterCtrl,
@@ -172,5 +197,6 @@ module.exports = {
   usersCtrl,
   deleteUserCtrl,
   updateUserCtrl,
-  profilePhotoUploadCtrl 
+  profilePhotoUploadCtrl,
+  whoViewedMyProfileCtrl,
 };

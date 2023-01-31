@@ -9,6 +9,7 @@ const {
   deleteUserCtrl,
   updateUserCtrl,
   profilePhotoUploadCtrl, 
+  whoViewedMyProfileCtrl,
 } = require("../../controller/user/userCtrl");
 const isLogin=require("../../middlewares/isLogin");
 const userRouter = express.Router();
@@ -25,6 +26,9 @@ userRouter.get("/profile/",isLogin,userProfileCtrl);
 
 //GET/api/v1/users/
 userRouter.get("/", usersCtrl);
+
+//GET/api/v1/users/profile-viewers/:id
+userRouter.get("/profile-viewers/:id",isLogin,whoViewedMyProfileCtrl);
 
 //Delete/api/v1/users/:id
 userRouter.delete("/:id", deleteUserCtrl);
