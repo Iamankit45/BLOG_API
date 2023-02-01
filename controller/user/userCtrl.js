@@ -80,7 +80,7 @@ const userProfileCtrl = async (req, res) => {
   // const { id } = req.params;
   try {
     const token = getTokenFromHeader(req);
-    // console.log(token);
+    console.log(token);
     const user = await User.findById(req.userAuth);
     res.json({
       status: "success",
@@ -121,6 +121,84 @@ const whoViewedMyProfileCtrl = async (req, res, next) => {
     res.json(error.message);
   }
 };
+
+const followingCtrl = async (req, res, next) => {
+  try {
+    const userToFollow = await User.findById(req.params.id);
+    const userWhoFollowed = await User.findById(req.userAuth);
+
+    if (userWhoFollowed && userToFollow) {
+      const isUserAlreadyFollowed = userToFollow.followers.find(
+        (follower) => follower.toString() === userWhoFollowed._id.toString()
+      );
+      if (isUserAlreadyFollowed) {
+        return next(appErr("you already follow this user"));
+      } else {
+        userToFollow.followers.push(userWhoFollowed._id);
+        userWhoFollowed.following.push(userToFollow._id);
+
+        await userWhoFollowed.save();
+        await userToFollow.save();
+
+        res.json({
+          status: "success",
+          data: "you have succesfully followed this user",
+        });
+      }
+    }
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+const unFollowCtrl = async (req, res, next) => {
+  try {
+    const userToBeUnFollowed = await User.findById(req.params.id);
+    const userWhoUnFollowed = await User.findById(req.userAuth);
+
+    if (userToBeUnFollowed && userWhoUnFollowed) {
+      const isUserAlreadyFollowed = userToBeUnFollowed.followers.find(
+        (follower) => follower.toString() === userWhoUnFollowed._id.toString()
+      );
+
+      if (!isUserAlreadyFollowed) {
+        return next(appErr("you have not followed this user"));
+      } else {
+        userToBeUnFollowed.followers = userToBeUnFollowed.followers.filter(
+          (follower) => follower.toString() !== userWhoUnFollowed._id.toString()
+        );
+
+        await userToBeUnFollowed.save();
+
+        userWhoUnFollowed.following = userWhoUnFollowed.following.filter(
+          (following) =>
+            following.toString() !== userToBeUnFollowed._id.toString()
+        );
+        await userWhoUnFollowed.save();
+        res.json({
+          status: "success",
+          data: "you have successfully unfollow this user",
+        });
+      }
+     
+    }
+  } 
+  catch (error) {
+    res.json(error.message);
+  }
+};
+
+const blockUsersCtrl = async (req, res) => {
+  try {
+    res.json({
+      status: "success",
+      data: "blocked user",
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
 
 const usersCtrl = async (req, res) => {
   try {
@@ -199,4 +277,7 @@ module.exports = {
   updateUserCtrl,
   profilePhotoUploadCtrl,
   whoViewedMyProfileCtrl,
+  followingCtrl,
+  unFollowCtrl,
+  blockUsersCtrl
 };

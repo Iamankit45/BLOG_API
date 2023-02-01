@@ -10,6 +10,9 @@ const {
   updateUserCtrl,
   profilePhotoUploadCtrl, 
   whoViewedMyProfileCtrl,
+  followingCtrl,
+  unFollowCtrl,
+  blockUsersCtrl
 } = require("../../controller/user/userCtrl");
 const isLogin=require("../../middlewares/isLogin");
 const userRouter = express.Router();
@@ -30,10 +33,22 @@ userRouter.get("/", usersCtrl);
 //GET/api/v1/users/profile-viewers/:id
 userRouter.get("/profile-viewers/:id",isLogin,whoViewedMyProfileCtrl);
 
+
+//GET/api/v1/users/following/:id
+userRouter.get("/following/:id",isLogin,followingCtrl);
+
+
+userRouter.get("/unfollowing/:id",isLogin,unFollowCtrl);
+
+//GET/api/v1/users/blocked/:id
+userRouter.get("/block/:id",isLogin,blockUsersCtrl);
+
 //Delete/api/v1/users/:id
 userRouter.delete("/:id", deleteUserCtrl);
 //put/api/v1/users/:id
 userRouter.put("/:id", updateUserCtrl);
+
+
 
 
 userRouter.post("/profile-photo-upload",isLogin,upload.single('profile'),profilePhotoUploadCtrl);
