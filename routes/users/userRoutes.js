@@ -12,7 +12,8 @@ const {
   whoViewedMyProfileCtrl,
   followingCtrl,
   unFollowCtrl,
-  blockUsersCtrl
+  blockUsersCtrl,
+  unblockUserCtrl
 } = require("../../controller/user/userCtrl");
 const isLogin=require("../../middlewares/isLogin");
 const userRouter = express.Router();
@@ -42,6 +43,10 @@ userRouter.get("/unfollowing/:id",isLogin,unFollowCtrl);
 
 //GET/api/v1/users/blocked/:id
 userRouter.get("/block/:id",isLogin,blockUsersCtrl);
+
+//GET/api/v1/users/unblock/:id
+userRouter.get("/unblock/:id",isLogin,unblockUserCtrl);
+
 
 //Delete/api/v1/users/:id
 userRouter.delete("/:id", deleteUserCtrl);
