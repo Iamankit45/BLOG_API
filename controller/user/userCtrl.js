@@ -73,15 +73,15 @@ const userLoginCtrl = async (req, res) => {
   }
 };
 
-const userProfileCtrl = async (req, res) => {
-  // console.log(req.headers);
+const userProfileCtrl = async (req, res,next) => {
+ 
 
-  console.log(req.userAuth);
-  // const { id } = req.params;
+  // console.log(req.userAuth);
+ 
   try {
     const token = getTokenFromHeader(req);
-    console.log(token);
-    const user = await User.findById(req.userAuth);
+    // console.log(token);
+    const user = await User.findById(req.userAuth)
     res.json({
       status: "success",
       data: user,
@@ -251,11 +251,62 @@ const unblockUserCtrl = async (req, res, next) => {
   }
 };
 
-const usersCtrl = async (req, res) => {
+
+const adminBlockUsersCtrl = async (req, res,next) => {
   try {
+
+const userToBeBlocked = await User.findById(req.params.id);
+
+if (!userToBeBlocked)
+ {
+  return next(appErr('user not found'));
+}
+
+userToBeBlocked.isBlocked=true;
+
+
+await userToBeBlocked.save();
     res.json({
       status: "success",
-      data: "all users route",
+      data: " u have succesfully blocked this user",
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+
+
+const adminUnBlockUsersCtrl = async (req, res,next) => {
+  try {
+
+const userToBeUnBlocked = await User.findById(req.params.id);
+
+if (!userToBeUnBlocked)
+ {
+  return next(appErr('user not found'));
+}
+
+userToBeUnBlocked.isBlocked=false;
+
+
+await userToBeUnBlocked.save();
+    res.json({
+      status: "success",
+      data: " u have succesfully unblocked this user",
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+
+const usersCtrl = async (req, res) => {
+  try {
+    const users =await User.find();
+    res.json({
+      status: "success",
+      data: users,
     });
   } catch (error) {
     res.json(error.message);
@@ -331,5 +382,7 @@ module.exports = {
   followingCtrl,
   unFollowCtrl,
   blockUsersCtrl,
-  unblockUserCtrl
+  unblockUserCtrl,
+  adminBlockUsersCtrl,
+  adminUnBlockUsersCtrl
 };

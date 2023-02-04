@@ -16,6 +16,7 @@ const postRouter = require("./routes/posts/postRoutes");
 const categoryRouter = require("./routes/categories/categoryRoutes");
 const commentRouter = require("./routes/comments/commentRoutes");
 
+
 //routing of users,posts,category,comments
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);

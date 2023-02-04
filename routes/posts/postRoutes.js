@@ -3,9 +3,10 @@ const express=require('express');
 const postRouter=express.Router();
 
 
-const {postRegisterCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl}=require('../../controller/post/postCtrl');
+const {createPostCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl}=require('../../controller/post/postCtrl');
 
-postRouter.post("/",postRegisterCtrl);
+const isLogin = require('../../middlewares/isLogin');
+postRouter.post("/",isLogin,createPostCtrl);
   
   
   

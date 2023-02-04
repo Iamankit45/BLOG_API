@@ -13,9 +13,12 @@ const {
   followingCtrl,
   unFollowCtrl,
   blockUsersCtrl,
-  unblockUserCtrl
+  unblockUserCtrl,
+  adminBlockUsersCtrl,
+  adminUnBlockUsersCtrl
 } = require("../../controller/user/userCtrl");
 const isLogin=require("../../middlewares/isLogin");
+const isAdmin=require("../../middlewares/isAdmin");
 const userRouter = express.Router();
 
 const upload=multer({storage});
@@ -47,6 +50,13 @@ userRouter.get("/block/:id",isLogin,blockUsersCtrl);
 //GET/api/v1/users/unblock/:id
 userRouter.get("/unblock/:id",isLogin,unblockUserCtrl);
 
+
+//put/api/v1/users/admin-block/:id
+userRouter.put("/admin-block/:id",isLogin,isAdmin,adminBlockUsersCtrl);
+
+
+//put/api/v1/users/admin-block/:id
+userRouter.put("/admin-unblock/:id",isLogin,isAdmin,adminUnBlockUsersCtrl);
 
 //Delete/api/v1/users/:id
 userRouter.delete("/:id", deleteUserCtrl);
