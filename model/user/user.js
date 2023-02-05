@@ -109,7 +109,7 @@ this.populate('posts');
 
   const lastPost = posts[posts.length - 1];
 
-  const lastPostDate = new Date(lastPost.createdAt);
+  const lastPostDate = new Date(lastPost ?.createdAt);
 
   const lastPostDateStr = lastPostDate.toDateString();
   console.log(lastPostDateStr);

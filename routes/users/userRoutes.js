@@ -15,7 +15,8 @@ const {
   blockUsersCtrl,
   unblockUserCtrl,
   adminBlockUsersCtrl,
-  adminUnBlockUsersCtrl
+  adminUnBlockUsersCtrl,
+  updatePasswordCtrl
 } = require("../../controller/user/userCtrl");
 const isLogin=require("../../middlewares/isLogin");
 const isAdmin=require("../../middlewares/isAdmin");
@@ -60,8 +61,12 @@ userRouter.put("/admin-unblock/:id",isLogin,isAdmin,adminUnBlockUsersCtrl);
 
 //Delete/api/v1/users/:id
 userRouter.delete("/:id", deleteUserCtrl);
-//put/api/v1/users/:id
-userRouter.put("/:id", updateUserCtrl);
+//put/api/v1/users/
+userRouter.put("/",isLogin,updateUserCtrl);
+
+
+//put/api/v1/users/update-password
+userRouter.put("/update-password",isLogin,updatePasswordCtrl);
 
 
 

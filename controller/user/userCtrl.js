@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const appErr = require("../../utils/appErr");
 const generateToken = require("../../utils/generateToken");
 const getTokenFromHeader = require("../../utils/getTokenFromHeader");
+const { findById } = require("../../model/post/post");
 
 const userRegisterCtrl = async (req, res, next) => {
   const { firstName, lastName, profilePhoto, email, password } = req.body;
@@ -73,15 +74,13 @@ const userLoginCtrl = async (req, res) => {
   }
 };
 
-const userProfileCtrl = async (req, res,next) => {
- 
-
+const userProfileCtrl = async (req, res, next) => {
   // console.log(req.userAuth);
- 
+
   try {
     const token = getTokenFromHeader(req);
     // console.log(token);
-    const user = await User.findById(req.userAuth)
+    const user = await User.findById(req.userAuth);
     res.json({
       status: "success",
       data: user,
@@ -180,10 +179,8 @@ const unFollowCtrl = async (req, res, next) => {
           data: "you have successfully unfollow this user",
         });
       }
-     
     }
-  } 
-  catch (error) {
+  } catch (error) {
     res.json(error.message);
   }
 };
@@ -199,7 +196,7 @@ const blockUsersCtrl = async (req, res, next) => {
     if (userWhoBlocked && userToBeBlocked) {
       //4. Check if userWhoUnfollowed is already in the user's blocked array
       const isUserAlreadyBlocked = userWhoBlocked.blocked.find(
-        blocked => blocked.toString() === userToBeBlocked._id.toString()
+        (blocked) => blocked.toString() === userToBeBlocked._id.toString()
       );
       if (isUserAlreadyBlocked) {
         return next(appErr("You already blocked this user"));
@@ -218,7 +215,6 @@ const blockUsersCtrl = async (req, res, next) => {
   }
 };
 
-
 //unblock
 const unblockUserCtrl = async (req, res, next) => {
   try {
@@ -230,14 +226,14 @@ const unblockUserCtrl = async (req, res, next) => {
     if (userToBeUnBlocked && userWhoUnBlocked) {
       //4. Check if userToBeUnBlocked is already in the arrays's of userWhoUnBlocked
       const isUserAlreadyBlocked = userWhoUnBlocked.blocked.find(
-        blocked => blocked.toString() === userToBeUnBlocked._id.toString()
+        (blocked) => blocked.toString() === userToBeUnBlocked._id.toString()
       );
       if (!isUserAlreadyBlocked) {
         return next(appErr("You have not blocked this user"));
       }
       //Remove the userToBeUnblocked from the main user
       userWhoUnBlocked.blocked = userWhoUnBlocked.blocked.filter(
-        blocked => blocked.toString() !== userToBeUnBlocked._id.toString()
+        (blocked) => blocked.toString() !== userToBeUnBlocked._id.toString()
       );
       //Save
       await userWhoUnBlocked.save();
@@ -251,21 +247,17 @@ const unblockUserCtrl = async (req, res, next) => {
   }
 };
 
-
-const adminBlockUsersCtrl = async (req, res,next) => {
+const adminBlockUsersCtrl = async (req, res, next) => {
   try {
+    const userToBeBlocked = await User.findById(req.params.id);
 
-const userToBeBlocked = await User.findById(req.params.id);
+    if (!userToBeBlocked) {
+      return next(appErr("user not found"));
+    }
 
-if (!userToBeBlocked)
- {
-  return next(appErr('user not found'));
-}
+    userToBeBlocked.isBlocked = true;
 
-userToBeBlocked.isBlocked=true;
-
-
-await userToBeBlocked.save();
+    await userToBeBlocked.save();
     res.json({
       status: "success",
       data: " u have succesfully blocked this user",
@@ -275,22 +267,17 @@ await userToBeBlocked.save();
   }
 };
 
-
-
-const adminUnBlockUsersCtrl = async (req, res,next) => {
+const adminUnBlockUsersCtrl = async (req, res, next) => {
   try {
+    const userToBeUnBlocked = await User.findById(req.params.id);
 
-const userToBeUnBlocked = await User.findById(req.params.id);
+    if (!userToBeUnBlocked) {
+      return next(appErr("user not found"));
+    }
 
-if (!userToBeUnBlocked)
- {
-  return next(appErr('user not found'));
-}
+    userToBeUnBlocked.isBlocked = false;
 
-userToBeUnBlocked.isBlocked=false;
-
-
-await userToBeUnBlocked.save();
+    await userToBeUnBlocked.save();
     res.json({
       status: "success",
       data: " u have succesfully unblocked this user",
@@ -300,10 +287,9 @@ await userToBeUnBlocked.save();
   }
 };
 
-
 const usersCtrl = async (req, res) => {
   try {
-    const users =await User.find();
+    const users = await User.find();
     res.json({
       status: "success",
       data: users,
@@ -324,12 +310,74 @@ const deleteUserCtrl = async (req, res) => {
   }
 };
 
-const updateUserCtrl = async (req, res) => {
+const updateUserCtrl = async (req, res, next) => {
+  const { email, lastName, firstName } = req.body;
+
   try {
+    // checking if email is not taken
+
+    if (email) {
+      const emailTaken = await User.findOne({ email });
+
+      if (emailTaken) {
+        return next(
+          appErr("email already taken ..so u cant update the email", 400)
+        );
+      }
+    }
+
+    //update the user
+
+    const user = await User.findByIdAndUpdate(
+      req.userAuth,
+      {
+        lastName,
+        firstName,
+        email,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     res.json({
       status: "success",
-      data: "update user route ",
+      data: user,
     });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+const updatePasswordCtrl = async (req, res,next) => {
+  const { password } = req.body;
+  try {
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      //update user
+
+      const user = await User.findByIdAndUpdate(
+        req.userAuth,
+        {
+          password:hashedPassword,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+      res.json({
+        status: "success",
+        data: "password changed succcesfully",
+      });
+    }
+    else{
+      return next(appErr("please provide password field"))
+    }
   } catch (error) {
     res.json(error.message);
   }
@@ -384,5 +432,6 @@ module.exports = {
   blockUsersCtrl,
   unblockUserCtrl,
   adminBlockUsersCtrl,
-  adminUnBlockUsersCtrl
+  adminUnBlockUsersCtrl,
+  updatePasswordCtrl,
 };
