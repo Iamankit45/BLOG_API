@@ -1,5 +1,7 @@
 const User = require("../../model/user/user");
-
+const Category = require("../../model/category/category");
+const Comment = require("../../model/comment/comment");
+const Post = require("../../model/post/post");
 const bcrypt = require("bcryptjs");
 const appErr = require("../../utils/appErr");
 const generateToken = require("../../utils/generateToken");
@@ -300,10 +302,18 @@ const usersCtrl = async (req, res) => {
 };
 
 const deleteUserAccountCtrl = async (req, res) => {
+
+
   try {
+const userToDelete= await User.findById(req.userAuth);
+
+await Post.deleteMany({user:req.userAuth});
+await Comment.deleteMany({user:req.userAuth});
+await Category.deleteMany({user:req.userAuth});
+await userToDelete.delete();
     res.json({
       status: "success",
-      data: "delete user route ",
+      data: "u have successfully deleted your account ",
     });
   } catch (error) {
     res.json(error.message);
