@@ -6,7 +6,7 @@ const {
   userLoginCtrl,
   userProfileCtrl,
   usersCtrl,
-  deleteUserCtrl,
+  deleteUserAccountCtrl,
   updateUserCtrl,
   profilePhotoUploadCtrl, 
   whoViewedMyProfileCtrl,
@@ -59,8 +59,8 @@ userRouter.put("/admin-block/:id",isLogin,isAdmin,adminBlockUsersCtrl);
 //put/api/v1/users/admin-block/:id
 userRouter.put("/admin-unblock/:id",isLogin,isAdmin,adminUnBlockUsersCtrl);
 
-//Delete/api/v1/users/:id
-userRouter.delete("/:id", deleteUserCtrl);
+//Delete/api/v1/users/delete-account
+userRouter.delete("/delete-account",isLogin, deleteUserAccountCtrl);
 //put/api/v1/users/
 userRouter.put("/",isLogin,updateUserCtrl);
 

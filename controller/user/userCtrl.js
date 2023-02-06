@@ -299,7 +299,7 @@ const usersCtrl = async (req, res) => {
   }
 };
 
-const deleteUserCtrl = async (req, res) => {
+const deleteUserAccountCtrl = async (req, res) => {
   try {
     res.json({
       status: "success",
@@ -423,7 +423,7 @@ module.exports = {
   userLoginCtrl,
   userProfileCtrl,
   usersCtrl,
-  deleteUserCtrl,
+  deleteUserAccountCtrl,
   updateUserCtrl,
   profilePhotoUploadCtrl,
   whoViewedMyProfileCtrl,
