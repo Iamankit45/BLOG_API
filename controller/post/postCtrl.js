@@ -1,7 +1,7 @@
 const Post = require("../../model/post/post");
 const User = require("../../model/user/user");
 
-const createPostCtrl = async (req, res) => {
+const createPostCtrl = async (req, res,next) => {
   const { title, description } = req.body;
 
   try {
@@ -23,8 +23,8 @@ const createPostCtrl = async (req, res) => {
       data: postCreated,
     });
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
 //GET/api/v1/post/:id

@@ -9,7 +9,7 @@ const getTokenFromHeader = require("../../utils/getTokenFromHeader");
 const { findById } = require("../../model/post/post");
 
 const userRegisterCtrl = async (req, res, next) => {
-  const { firstName, lastName, profilePhoto, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     //checking if email is already exist
@@ -38,13 +38,13 @@ const userRegisterCtrl = async (req, res, next) => {
   }
 };
 
-const userLoginCtrl = async (req, res) => {
+const userLoginCtrl = async (req, res,next) => {
   const { email, password } = req.body;
   try {
     //checking if email exist
     const userFound = await User.findOne({ email });
     if (!userFound) {
-      return res.json({ success: false, message: "invalid login credentials" });
+      return next(appErr("invalid login credentials"));
     }
 
     //checking the password
@@ -55,10 +55,7 @@ const userLoginCtrl = async (req, res) => {
     );
 
     if (!ispasswordmatched) {
-      return res.json({
-        success: false,
-        message: "invalid login credentials",
-      });
+      return next(appErr("invalid login credentials"));
     }
 
     res.json({
@@ -72,7 +69,7 @@ const userLoginCtrl = async (req, res) => {
       },
     });
   } catch (error) {
-    res.json(error.message);
+   next(appErr(error.message))
   }
 };
 
@@ -87,9 +84,9 @@ const userProfileCtrl = async (req, res, next) => {
       status: "success",
       data: user,
     });
-  } catch (error) {
-    res.json(error.message);
-  }
+  } catch (error)  {
+    next(appErr(error.message))
+   }
 };
 
 const whoViewedMyProfileCtrl = async (req, res, next) => {
@@ -119,8 +116,8 @@ const whoViewedMyProfileCtrl = async (req, res, next) => {
       }
     }
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
 const followingCtrl = async (req, res, next) => {
@@ -147,9 +144,9 @@ const followingCtrl = async (req, res, next) => {
         });
       }
     }
-  } catch (error) {
-    res.json(error.message);
-  }
+  } catch (error)  {
+    next(appErr(error.message))
+   }
 };
 
 const unFollowCtrl = async (req, res, next) => {
@@ -183,8 +180,8 @@ const unFollowCtrl = async (req, res, next) => {
       }
     }
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
 //block
@@ -265,8 +262,8 @@ const adminBlockUsersCtrl = async (req, res, next) => {
       data: " u have succesfully blocked this user",
     });
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
 const adminUnBlockUsersCtrl = async (req, res, next) => {
@@ -285,8 +282,8 @@ const adminUnBlockUsersCtrl = async (req, res, next) => {
       data: " u have succesfully unblocked this user",
     });
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
 const usersCtrl = async (req, res) => {
@@ -301,7 +298,7 @@ const usersCtrl = async (req, res) => {
   }
 };
 
-const deleteUserAccountCtrl = async (req, res) => {
+const deleteUserAccountCtrl = async (req, res,next) => {
 
 
   try {
@@ -316,8 +313,8 @@ await userToDelete.delete();
       data: "u have successfully deleted your account ",
     });
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
 const updateUserCtrl = async (req, res, next) => {
@@ -355,9 +352,9 @@ const updateUserCtrl = async (req, res, next) => {
       status: "success",
       data: user,
     });
-  } catch (error) {
-    res.json(error.message);
-  }
+  } catch (error)  {
+    next(appErr(error.message))
+   }
 };
 
 const updatePasswordCtrl = async (req, res,next) => {
@@ -389,11 +386,11 @@ const updatePasswordCtrl = async (req, res,next) => {
       return next(appErr("please provide password field"))
     }
   } catch (error) {
-    res.json(error.message);
-  }
+    next(appErr(error.message))
+   }
 };
 
-const profilePhotoUploadCtrl = async (req, res) => {
+const profilePhotoUploadCtrl = async (req, res,next) => {
   // console.log(req.file)
   try {
     const userToUpdate = await User.findById(req.userAuth);
