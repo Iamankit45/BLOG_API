@@ -19,6 +19,18 @@ const appErr = require('../../utils/appErr');
   }
   
   
+ //GET/api/v1/category/:id
+ const fetchCategoriesCtrl= async (req, res) => {
+  try {
+const categories = await Category.find();
+    res.json({
+      status: "success",
+      data: categories,
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+}
   
   //GET/api/v1/category/:id
   const getCategoryCtrl= async (req, res) => {
@@ -32,7 +44,7 @@ const appErr = require('../../utils/appErr');
     }
   }
   
-  
+ 
   
   //Delete/api/v1/category/:id
    const deleteCategoryCtrl= async (req, res) => {
@@ -58,4 +70,4 @@ const appErr = require('../../utils/appErr');
   }
 
 
-  module.exports={registerCategoryCtrl,getCategoryCtrl,deleteCategoryCtrl,updateCategoryCtrl}
+  module.exports={registerCategoryCtrl,getCategoryCtrl,deleteCategoryCtrl,updateCategoryCtrl,fetchCategoriesCtrl}
