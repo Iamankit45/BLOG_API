@@ -50,9 +50,10 @@ const categories = await Category.find();
   //Delete/api/v1/category/:id
    const deleteCategoryCtrl= async (req, res) => {
     try {
+      const category = await Category.findByIdAndDelete(req.params.id);
       res.json({
         status: "success",
-        data: "deleted category route ",
+        data: "deleted succesfully",
       });
     } catch (error) {
       res.json(error.message);
