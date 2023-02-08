@@ -35,9 +35,10 @@ const categories = await Category.find();
   //GET/api/v1/category/:id
   const getCategoryCtrl= async (req, res) => {
     try {
+      const category = await Category.findById(req.params.id);
       res.json({
         status: "success",
-        data: "category route ",
+        data: category,
       });
     } catch (error) {
       res.json(error.message);
