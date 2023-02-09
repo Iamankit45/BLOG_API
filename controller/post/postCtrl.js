@@ -1,16 +1,24 @@
 const Post = require("../../model/post/post");
 const User = require("../../model/user/user");
-
+const appErr = require("../../utils/appErr");
 const createPostCtrl = async (req, res,next) => {
-  const { title, description } = req.body;
+  const { title, description,category } = req.body;
 
   try {
     const author = await User.findById(req.userAuth);
+//check kr leta hun kahin user blocked to nhi hai n ...admin se
+
+if (author.isBlocked) {
+  return next(appErr("access denied ,account blocked",403));
+}
+
+
 
     const postCreated = await Post.create({
       title,
       description,
       user: author._id,
+      category
     });
 
     //associate user to a post created .....abe ye post user k posts field m push kr dete hain
