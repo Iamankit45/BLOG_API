@@ -1,5 +1,6 @@
 const Post = require("../../model/post/post");
 const User = require("../../model/user/user");
+const Category = require("../../model/category/category");
 const appErr = require("../../utils/appErr");
 const createPostCtrl = async (req, res,next) => {
   const { title, description,category } = req.body;
@@ -38,10 +39,28 @@ if (author.isBlocked) {
 
 const fetchPostCtrl = async (req, res) => {
   try {
-    const posts= await Post.find();
+    const posts= await Post.find({}).populate("user").populate("category","title");
+
+
+
+    // jo user hume block kr chuka hai ..uska post hu nhi dekh payenge ....
+const filteredPost = posts.filter(post=>{
+  
+  
+  const blockedUsers=post.user.blocked;
+  const isBlocked = blockedUsers.includes(req.userAuth);
+console.log(isBlocked);
+return isBlocked ? null : post;
+
+});
+  
+  
+
+
+
     res.json({
       status: "success",
-      data: posts,
+      data: filteredPost
     });
   } catch (error) {
     res.json(error.message);
