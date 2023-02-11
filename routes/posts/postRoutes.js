@@ -3,15 +3,18 @@ const express=require('express');
 const postRouter=express.Router();
 
 
-const {createPostCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl}=require('../../controller/post/postCtrl');
+const {createPostCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl,fetchPostCtrl}=require('../../controller/post/postCtrl');
 
 const isLogin = require('../../middlewares/isLogin');
 postRouter.post("/",isLogin,createPostCtrl);
   
   
   
+
+postRouter.get("/",isLogin,fetchPostCtrl);
+
   //GET/api/v1/post/:id
-postRouter.get("/:id",getPostCtrl);
+// postRouter.get("/:id",getPostCtrl);
   
   //GET/api/v1/posts/
 postRouter.get("/",getAllPostCtrl);

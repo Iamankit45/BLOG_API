@@ -35,6 +35,20 @@ if (author.isBlocked) {
    }
 };
 
+
+const fetchPostCtrl = async (req, res) => {
+  try {
+    const posts= await Post.find();
+    res.json({
+      status: "success",
+      data: posts,
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+
 //GET/api/v1/post/:id
 const getPostCtrl = async (req, res) => {
   try {
@@ -88,4 +102,5 @@ module.exports = {
   deletePostCtrl,
   updatePostCtrl,
   getPostCtrl,
+  fetchPostCtrl
 };
