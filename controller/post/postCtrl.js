@@ -68,6 +68,19 @@ return isBlocked ? null : post;
 };
 
 
+//toogle likes
+const toggleLikesPostCtrl = async (req, res) => {
+  try {
+    res.json({
+      status: "success",
+      data: " like controller ",
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+
 //GET/api/v1/post/:id
 const getPostCtrl = async (req, res) => {
   try {
@@ -115,11 +128,15 @@ const updatePostCtrl = async (req, res) => {
   }
 };
 
+
+
+
 module.exports = {
   createPostCtrl,
   getAllPostCtrl,
   deletePostCtrl,
   updatePostCtrl,
   getPostCtrl,
-  fetchPostCtrl
+  fetchPostCtrl,
+  toggleLikesPostCtrl
 };
