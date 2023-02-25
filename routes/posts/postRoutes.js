@@ -3,7 +3,7 @@ const express=require('express');
 const postRouter=express.Router();
 
 
-const {createPostCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl,fetchPostCtrl,toggleLikesPostCtrl, toggleDisLikesPostCtrl}=require('../../controller/post/postCtrl');
+const {createPostCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl,fetchPostCtrl,toggleLikesPostCtrl, toggleDisLikesPostCtrl,postDetailsCtrl}=require('../../controller/post/postCtrl');
 
 const isLogin = require('../../middlewares/isLogin');
 postRouter.post("/",isLogin,createPostCtrl);
@@ -30,6 +30,6 @@ postRouter.delete("/:id",deletePostCtrl);
 
 postRouter.put("/:id",updatePostCtrl);
 
-
+postRouter.get("/:id",isLogin,postDetailsCtrl);
 
   module.exports = postRouter;

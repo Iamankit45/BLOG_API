@@ -125,6 +125,30 @@ if (isUnLiked)
   }
 };
 
+const postDetailsCtrl = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    const isViewed= post.numViews.includes(req.userAuth);
+
+if (isViewed) 
+{
+  res.json({
+    status: "success",
+    data: post,
+  });
+}
+else{
+  post.numViews.push(req.userAuth);
+  await post.save();
+}
+    
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+
 //GET/api/v1/post/:id
 const getPostCtrl = async (req, res) => {
   try {
@@ -183,5 +207,6 @@ module.exports = {
   getPostCtrl,
   fetchPostCtrl,
   toggleLikesPostCtrl,
-  toggleDisLikesPostCtrl
+  toggleDisLikesPostCtrl,
+  postDetailsCtrl
 };
