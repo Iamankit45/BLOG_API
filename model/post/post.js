@@ -61,6 +61,19 @@ const postSchema=new mongoose.Schema({
 
 })
 
+//hook
+postSchema.pre(/^find/, function(next) {
+
+//adding views count as virtual field
+
+postSchema.virtual("viewscount").get(function() {
+
+  const post = this;
+  return post.numViews.length;
+})
+next();
+})
+
 
 const Post = mongoose.model("Post", postSchema);
 
