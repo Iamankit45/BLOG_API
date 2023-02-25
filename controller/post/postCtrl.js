@@ -96,6 +96,34 @@ if (isLiked)
   }
 };
 
+//toggle dislikes
+
+const toggleDisLikesPostCtrl = async (req, res) => {
+  try {
+const post = await Post.findById(req.params.id);
+
+//check kr rhe hai ki kahin agar user pehle se ye post like kr chuka hoga to...
+const isUnLiked = post.disLikes.includes(req.userAuth);
+
+if (isUnLiked)
+ {
+  post.disLikes=post.disLikes.filter(disLikes => disLikes.toString() !=req.userAuth.toString())
+  await post.save();
+}else{
+  //agar user like nhi kiya hai ye vala post pehle tb.......
+  post.disLikes.push(req.userAuth);
+  await post.save();
+
+}
+
+    res.json({
+      status: "success",
+      data: post,
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
 
 //GET/api/v1/post/:id
 const getPostCtrl = async (req, res) => {
@@ -154,5 +182,6 @@ module.exports = {
   updatePostCtrl,
   getPostCtrl,
   fetchPostCtrl,
-  toggleLikesPostCtrl
+  toggleLikesPostCtrl,
+  toggleDisLikesPostCtrl
 };
