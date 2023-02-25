@@ -71,9 +71,25 @@ return isBlocked ? null : post;
 //toogle likes
 const toggleLikesPostCtrl = async (req, res) => {
   try {
+const post = await Post.findById(req.params.id);
+
+//check kr rhe hai ki kahin agar user pehle se ye post like kr chuka hoga to...
+const isLiked = post.likes.includes(req.userAuth);
+
+if (isLiked)
+ {
+  post.likes=post.likes.filter(likes => likes.toString() !=req.userAuth.toString())
+  await post.save();
+}else{
+  //agar user like nhi kiya hai ye vala post pehle tb.......
+  post.likes.push(req.userAuth);
+  await post.save();
+
+}
+
     res.json({
       status: "success",
-      data: " like controller ",
+      data: post,
     });
   } catch (error) {
     res.json(error.message);
