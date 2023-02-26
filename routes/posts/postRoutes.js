@@ -33,7 +33,7 @@ postRouter.get("/likes/:id",isLogin,toggleLikesPostCtrl);
 postRouter.get("/disLikes/:id",isLogin,toggleDisLikesPostCtrl);
 
   //Delete/api/v1/posts/:id
-postRouter.delete("/:id",deletePostCtrl);
+postRouter.delete("/:id",isLogin,deletePostCtrl);
   //put/api/v1/posts/:id
 
 postRouter.put("/:id",updatePostCtrl);

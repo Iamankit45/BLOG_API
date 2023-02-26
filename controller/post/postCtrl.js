@@ -7,7 +7,7 @@ const appErr = require("../../utils/appErr");
 
 
 const createPostCtrl = async (req, res,next) => {
-
+ 
   const { title, description,category } = req.body;
 
   try {
@@ -180,11 +180,19 @@ const getAllPostCtrl = async (req, res) => {
 };
 
 //Delete/api/v1/posts/:id
-const deletePostCtrl = async (req, res) => {
+const deletePostCtrl = async (req, res,next) => {
   try {
+
+    const post = await Post.findById(req.params.id);
+    if (post.user.toString()!==req.userAuth.toString()) {
+      
+      return next(appErr("you are not allowed to delte this post ",403))
+    }
+
+    await Post.findByIdAndDelete(req.paramsid);
     res.json({
       status: "success",
-      data: "delete posts route ",
+      data: "post successfully delted",
     });
   } catch (error) {
     res.json(error.message);
