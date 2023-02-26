@@ -2,7 +2,12 @@ const Post = require("../../model/post/post");
 const User = require("../../model/user/user");
 const Category = require("../../model/category/category");
 const appErr = require("../../utils/appErr");
+
+
+
+
 const createPostCtrl = async (req, res,next) => {
+
   const { title, description,category } = req.body;
 
   try {
@@ -19,7 +24,8 @@ if (author.isBlocked) {
       title,
       description,
       user: author._id,
-      category
+      category,
+      photo:req && req.file && req.file.path
     });
 
     //associate user to a post created .....abe ye post user k posts field m push kr dete hain
