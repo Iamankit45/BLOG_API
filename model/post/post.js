@@ -78,6 +78,13 @@ postSchema.virtual("likescount").get(function() {
   return post.likes.length;
 })
 
+postSchema.virtual("Dislikecount").get(function() {
+
+  const post = this;
+  return post.disLikes.length;
+})
+
+
 next();
 })
 
