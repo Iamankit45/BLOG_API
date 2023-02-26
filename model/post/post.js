@@ -71,6 +71,13 @@ postSchema.virtual("viewscount").get(function() {
   const post = this;
   return post.numViews.length;
 })
+
+postSchema.virtual("likescount").get(function() {
+
+  const post = this;
+  return post.likes.length;
+})
+
 next();
 })
 
