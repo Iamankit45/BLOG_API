@@ -84,6 +84,14 @@ postSchema.virtual("Dislikecount").get(function() {
   return post.disLikes.length;
 })
 
+postSchema.virtual("likesPercentage").get(function(){
+const post =this;
+const total = (post.likes.length+ post.disLikes.length);
+const percentage= (post.likes.length/total)*100;
+return `${percentage}%`
+
+
+})
 
 next();
 })
