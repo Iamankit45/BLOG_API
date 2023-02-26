@@ -102,6 +102,20 @@ postSchema.virtual("DislikePercentage").get(function(){
   
   })
 
+postSchema.virtual("daysAgo").get(function(){
+const post=this;
+const date=new Date(post.createdAt);
+const daysAgo=Math.floor((Date.now()-date)/86400000);
+return daysAgo===0?"Today":daysAgo===1?"Yesterday":`${daysAgo} days Ago`;
+
+
+
+
+})
+
+
+
+
 next();
 })
 
