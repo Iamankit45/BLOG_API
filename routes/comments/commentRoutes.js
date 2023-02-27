@@ -14,7 +14,7 @@ commentRouter.post("/:id",isLogin, postCommentCtrl);
 commentRouter.get("/:id", getCommentCtrl);
 
 //Delete/api/v1/comments/:id
-commentRouter.delete("/:id", deleteCommentCtrl);
+commentRouter.delete("/:id",isLogin, deleteCommentCtrl);
 //put/api/v1/comments/:id
 commentRouter.put("/:id",isLogin, updateCommentCtrl);
 

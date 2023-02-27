@@ -1,7 +1,7 @@
 const Comment=require('../../model/comment/comment');
 const User=require('../../model/user/user');
 const Post = require('../../model/post/post');
-const {appErr}=require('../../utils/appErr');
+const appErr=require('../../utils/appErr');
  
 //POST/api/v1/comments/
 const postCommentCtrl= async (req, res,next) => {
@@ -46,7 +46,7 @@ await post.save({validateBeforeSave:false});
   
   
   //GET/api/v1/comments/:id
-  const getCommentCtrl = async (req, res) => {
+  const getCommentCtrl = async (req,res,next) => {
     try {
       res.json({
         status: "success",
@@ -60,14 +60,22 @@ await post.save({validateBeforeSave:false});
   
   
   //Delete/api/v1/comments/:id
- const deleteCommentCtrl = async (req, res) => {
+ const deleteCommentCtrl = async (req, res,next) => {
     try {
+      const comment = await Comment.findById(req.params.id);
+
+      //check kr rhe hain ki yee post iss user se belong krta hai ki nhi
+      if (comment.user.toString() !== req.userAuth.toString()) {
+        return next(appErr("you are not allowed to delete this comment ", 403));
+      }
+
+      await Comment.findByIdAndDelete(req.params.id);
       res.json({
         status: "success",
-        data: "deleted comments route ",
+        data: "comment deleted succesfully",
       });
     } catch (error) {
-      res.json(error.message);
+      next(appErr(error.message))
     }
   }
   //put/api/v1/comments/:id
