@@ -3,29 +3,23 @@ const User = require("../../model/user/user");
 const Category = require("../../model/category/category");
 const appErr = require("../../utils/appErr");
 
-
-
-
-const createPostCtrl = async (req, res,next) => {
- 
-  const { title, description,category } = req.body;
+const createPostCtrl = async (req, res, next) => {
+  const { title, description, category } = req.body;
 
   try {
     const author = await User.findById(req.userAuth);
-//check kr leta hun kahin user blocked to nhi hai n ...admin se
+    //check kr leta hun kahin user blocked to nhi hai n ...admin se
 
-if (author.isBlocked) {
-  return next(appErr("access denied ,account blocked",403));
-}
-
-
+    if (author.isBlocked) {
+      return next(appErr("access denied ,account blocked", 403));
+    }
 
     const postCreated = await Post.create({
       title,
       description,
       user: author._id,
       category,
-      photo:req && req.file && req.file.path
+      photo: req && req.file && req.file.path,
     });
 
     //associate user to a post created .....abe ye post user k posts field m push kr dete hain
@@ -38,60 +32,51 @@ if (author.isBlocked) {
       data: postCreated,
     });
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
-
 
 const fetchPostCtrl = async (req, res) => {
   try {
-    const posts= await Post.find({}).populate("user").populate("category","title");
-
-
+    const posts = await Post.find({})
+      .populate("user")
+      .populate("category", "title");
 
     // jo user hume block kr chuka hai ..uska post hu nhi dekh payenge ....
-const filteredPost = posts.filter(post=>{
-  
-  
-  const blockedUsers=post.user.blocked;
-  const isBlocked = blockedUsers.includes(req.userAuth);
-console.log(isBlocked);
-return isBlocked ? null : post;
-
-});
-  
-  
-
-
+    const filteredPost = posts.filter((post) => {
+      const blockedUsers = post.user.blocked;
+      const isBlocked = blockedUsers.includes(req.userAuth);
+      console.log(isBlocked);
+      return isBlocked ? null : post;
+    });
 
     res.json({
       status: "success",
-      data: filteredPost
+      data: filteredPost,
     });
   } catch (error) {
     res.json(error.message);
   }
 };
 
-
 //toogle likes
 const toggleLikesPostCtrl = async (req, res) => {
   try {
-const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
 
-//check kr rhe hai ki kahin agar user pehle se ye post like kr chuka hoga to...
-const isLiked = post.likes.includes(req.userAuth);
+    //check kr rhe hai ki kahin agar user pehle se ye post like kr chuka hoga to...
+    const isLiked = post.likes.includes(req.userAuth);
 
-if (isLiked)
- {
-  post.likes=post.likes.filter(likes => likes.toString() !=req.userAuth.toString())
-  await post.save();
-}else{
-  //agar user like nhi kiya hai ye vala post pehle tb.......
-  post.likes.push(req.userAuth);
-  await post.save();
-
-}
+    if (isLiked) {
+      post.likes = post.likes.filter(
+        (likes) => likes.toString() != req.userAuth.toString()
+      );
+      await post.save();
+    } else {
+      //agar user like nhi kiya hai ye vala post pehle tb.......
+      post.likes.push(req.userAuth);
+      await post.save();
+    }
 
     res.json({
       status: "success",
@@ -106,21 +91,21 @@ if (isLiked)
 
 const toggleDisLikesPostCtrl = async (req, res) => {
   try {
-const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
 
-//check kr rhe hai ki kahin agar user pehle se ye post like kr chuka hoga to...
-const isUnLiked = post.disLikes.includes(req.userAuth);
+    //check kr rhe hai ki kahin agar user pehle se ye post like kr chuka hoga to...
+    const isUnLiked = post.disLikes.includes(req.userAuth);
 
-if (isUnLiked)
- {
-  post.disLikes=post.disLikes.filter(disLikes => disLikes.toString() !=req.userAuth.toString())
-  await post.save();
-}else{
-  //agar user like nhi kiya hai ye vala post pehle tb.......
-  post.disLikes.push(req.userAuth);
-  await post.save();
-
-}
+    if (isUnLiked) {
+      post.disLikes = post.disLikes.filter(
+        (disLikes) => disLikes.toString() != req.userAuth.toString()
+      );
+      await post.save();
+    } else {
+      //agar user like nhi kiya hai ye vala post pehle tb.......
+      post.disLikes.push(req.userAuth);
+      await post.save();
+    }
 
     res.json({
       status: "success",
@@ -135,25 +120,21 @@ const postDetailsCtrl = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    const isViewed= post.numViews.includes(req.userAuth);
+    const isViewed = post.numViews.includes(req.userAuth);
 
-if (isViewed) 
-{
-  res.json({
-    status: "success",
-    data: post,
-  });
-}
-else{
-  post.numViews.push(req.userAuth);
-  await post.save();
-}
-    
+    if (isViewed) {
+      res.json({
+        status: "success",
+        data: post,
+      });
+    } else {
+      post.numViews.push(req.userAuth);
+      await post.save();
+    }
   } catch (error) {
     res.json(error.message);
   }
 };
-
 
 //GET/api/v1/post/:id
 const getPostCtrl = async (req, res) => {
@@ -180,13 +161,11 @@ const getAllPostCtrl = async (req, res) => {
 };
 
 //Delete/api/v1/posts/:id
-const deletePostCtrl = async (req, res,next) => {
+const deletePostCtrl = async (req, res, next) => {
   try {
-
     const post = await Post.findById(req.params.id);
-    if (post.user.toString()!==req.userAuth.toString()) {
-      
-      return next(appErr("you are not allowed to delte this post ",403))
+    if (post.user.toString() !== req.userAuth.toString()) {
+      return next(appErr("you are not allowed to delte this post ", 403));
     }
 
     await Post.findByIdAndDelete(req.paramsid);
@@ -199,19 +178,34 @@ const deletePostCtrl = async (req, res,next) => {
   }
 };
 //put/api/v1/posts/:id
-const updatePostCtrl = async (req, res) => {
+const updatePostCtrl = async (req, res, next) => {
+  const { title, description, category } = req.body;
   try {
+    const post = await Post.findById(req.params.id);
+
+    //check kr rhe hain ki yee post iss user se belong krta hai ki nhi
+    if (post.user.toString() !== req.userAuth.toString()) {
+      return next(appErr("you are not allowed to update this post ", 403));
+    }
+
+    await Post.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        description,
+        category,
+        photo: req && req.file && req.file.path,
+      },
+      { new: true }
+    );
     res.json({
       status: "success",
-      data: "update posts route ",
+      data: post,
     });
   } catch (error) {
     res.json(error.message);
   }
 };
-
-
-
 
 module.exports = {
   createPostCtrl,
@@ -222,5 +216,5 @@ module.exports = {
   fetchPostCtrl,
   toggleLikesPostCtrl,
   toggleDisLikesPostCtrl,
-  postDetailsCtrl
+  postDetailsCtrl,
 };
