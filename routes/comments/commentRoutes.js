@@ -16,6 +16,6 @@ commentRouter.get("/:id", getCommentCtrl);
 //Delete/api/v1/comments/:id
 commentRouter.delete("/:id", deleteCommentCtrl);
 //put/api/v1/comments/:id
-commentRouter.put("/:id", updateCommentCtrl);
+commentRouter.put("/:id",isLogin, updateCommentCtrl);
 
 module.exports = commentRouter;

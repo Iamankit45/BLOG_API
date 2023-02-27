@@ -72,15 +72,26 @@ await post.save({validateBeforeSave:false});
   }
   //put/api/v1/comments/:id
   const updateCommentCtrl= async (req, res) => {
+    const {description}=req.body;
     try {
+
+      const comment = await Comment.findById(req.params.id);
+
+    //check kr rhe hain ki yee post iss user se belong krta hai ki nhi
+    if (comment.user.toString() !== req.userAuth.toString()) {
+      return next(appErr("you are not allowed to update this comment ", 403));
+    }
+
+      const category=await Comment.findByIdAndUpdate(req.params.id,{description},{new:true,runValidators:true})
       res.json({
         status: "success",
-        data: "update comments route ",
+        data: category,
       });
     } catch (error) {
       res.json(error.message);
     }
   }
+
 
 
   module.exports={postCommentCtrl,getCommentCtrl,deleteCommentCtrl,updateCommentCtrl}
