@@ -36,7 +36,7 @@ const createPostCtrl = async (req, res, next) => {
   }
 };
 
-const fetchPostCtrl = async (req, res) => {
+const fetchPostCtrl = async (req, res,next) => {
   try {
     const posts = await Post.find({})
       .populate("user")
@@ -55,12 +55,12 @@ const fetchPostCtrl = async (req, res) => {
       data: filteredPost,
     });
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 
 //toogle likes
-const toggleLikesPostCtrl = async (req, res) => {
+const toggleLikesPostCtrl = async (req, res,next) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -83,13 +83,13 @@ const toggleLikesPostCtrl = async (req, res) => {
       data: post,
     });
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 
 //toggle dislikes
 
-const toggleDisLikesPostCtrl = async (req, res) => {
+const toggleDisLikesPostCtrl = async (req, res,next) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -132,31 +132,31 @@ const postDetailsCtrl = async (req, res) => {
       await post.save();
     }
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 
 //GET/api/v1/post/:id
-const getPostCtrl = async (req, res) => {
+const getPostCtrl = async (req, res,next) => {
   try {
     res.json({
       status: "success",
       data: "post route ",
     });
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 
 //GET/api/v1/posts/
-const getAllPostCtrl = async (req, res) => {
+const getAllPostCtrl = async (req, res,next) => {
   try {
     res.json({
       status: "success",
       data: "posts route",
     });
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 
@@ -174,12 +174,12 @@ const deletePostCtrl = async (req, res, next) => {
       data: "post successfully delted",
     });
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 //put/api/v1/posts/:id
 const updatePostCtrl = async (req, res, next) => {
-  const { title, description, category } = req.body;
+  const { title, description, category,photo } = req.body;
   try {
     const post = await Post.findById(req.params.id);
 
@@ -203,7 +203,7 @@ const updatePostCtrl = async (req, res, next) => {
       data: post,
     });
   } catch (error) {
-    res.json(error.message);
+    next(appErr(error.message));
   }
 };
 
