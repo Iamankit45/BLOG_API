@@ -36,6 +36,7 @@ const createPostCtrl = async (req, res, next) => {
   }
 };
 
+//for all post
 const fetchPostCtrl = async (req, res,next) => {
   try {
     const posts = await Post.find({})
@@ -116,6 +117,8 @@ const toggleDisLikesPostCtrl = async (req, res,next) => {
   }
 };
 
+
+// for viewing single post
 const postDetailsCtrl = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -136,29 +139,10 @@ const postDetailsCtrl = async (req, res) => {
   }
 };
 
-//GET/api/v1/post/:id
-const getPostCtrl = async (req, res,next) => {
-  try {
-    res.json({
-      status: "success",
-      data: "post route ",
-    });
-  } catch (error) {
-    next(appErr(error.message));
-  }
-};
 
-//GET/api/v1/posts/
-const getAllPostCtrl = async (req, res,next) => {
-  try {
-    res.json({
-      status: "success",
-      data: "posts route",
-    });
-  } catch (error) {
-    next(appErr(error.message));
-  }
-};
+
+
+
 
 //Delete/api/v1/posts/:id
 const deletePostCtrl = async (req, res, next) => {
@@ -209,10 +193,10 @@ const updatePostCtrl = async (req, res, next) => {
 
 module.exports = {
   createPostCtrl,
-  getAllPostCtrl,
+  
   deletePostCtrl,
   updatePostCtrl,
-  getPostCtrl,
+
   fetchPostCtrl,
   toggleLikesPostCtrl,
   toggleDisLikesPostCtrl,

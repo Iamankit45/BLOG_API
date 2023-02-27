@@ -1,43 +1,39 @@
-const express=require('express');
+const express = require("express");
 
-const postRouter=express.Router();
+const postRouter = express.Router();
 
-const storage=require('../../config/cloudinary');
-const multer=require('multer');
+const storage = require("../../config/cloudinary");
+const multer = require("multer");
 
+const {
+  createPostCtrl,
+  deletePostCtrl,
+  updatePostCtrl,
+  fetchPostCtrl,
+  toggleLikesPostCtrl,
+  toggleDisLikesPostCtrl,
+  postDetailsCtrl,
+} = require("../../controller/post/postCtrl");
 
-const {createPostCtrl,getAllPostCtrl,deletePostCtrl,updatePostCtrl,getPostCtrl,fetchPostCtrl,toggleLikesPostCtrl, toggleDisLikesPostCtrl,postDetailsCtrl}=require('../../controller/post/postCtrl');
-
-const isLogin = require('../../middlewares/isLogin');
+const isLogin = require("../../middlewares/isLogin");
 
 //file upload middleware
-const upload =multer({storage});
+const upload = multer({ storage });
 
+postRouter.post("/", isLogin, upload.single("image"), createPostCtrl);
 
-postRouter.post("/",isLogin,upload.single("image"),createPostCtrl);
-  
-  
-   
+postRouter.get("/", isLogin, fetchPostCtrl);
 
-postRouter.get("/",isLogin,fetchPostCtrl);
+postRouter.get("/likes/:id", isLogin, toggleLikesPostCtrl);
 
-  //GET/api/v1/post/:id
-// postRouter.get("/:id",getPostCtrl);
-  
-  //GET/api/v1/posts/
-postRouter.get("/",getAllPostCtrl);
-  
+postRouter.get("/disLikes/:id", isLogin, toggleDisLikesPostCtrl);
 
-postRouter.get("/likes/:id",isLogin,toggleLikesPostCtrl);
+//Delete/api/v1/posts/:id
+postRouter.delete("/:id", isLogin, deletePostCtrl);
+//put/api/v1/posts/:id
 
-postRouter.get("/disLikes/:id",isLogin,toggleDisLikesPostCtrl);
+postRouter.put("/:id", isLogin, upload.single("image"), updatePostCtrl);
 
-  //Delete/api/v1/posts/:id
-postRouter.delete("/:id",isLogin,deletePostCtrl);
-  //put/api/v1/posts/:id
+postRouter.get("/:id", isLogin, postDetailsCtrl);
 
-postRouter.put("/:id",isLogin,upload.single("image"),updatePostCtrl);
-
-postRouter.get("/:id",isLogin,postDetailsCtrl);
-
-  module.exports = postRouter;
+module.exports = postRouter;
