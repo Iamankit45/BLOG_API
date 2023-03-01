@@ -237,3 +237,31 @@ PUT /api/v1/users/unblock/:id
 | :--------------- | :------- | :--------------------------------- | :------- |
 | `authentication` | `string` | Your token                         | yes      |
 | `id`             | `string` | Id of the user you want to unblock | yes      |
+
+
+
+## **Admin blocking a user**
+
+```http
+PUT /api/v1/users/admin-block/:id
+```
+
+| Parameter        | Type     | Description                      | Required |
+| :--------------- | :------- | :------------------------------- | :------- |
+| `authentication` | `string` | Your token                       | yes      |
+| `id`             | `string` | Id of the user you want to block | yes      |
+
+
+
+
+## **Admin unblocking a user**
+
+```http
+PUT /api/v1/users/admin-unblock/:id
+```
+
+| Parameter        | Type     | Description                        | Required |
+| :--------------- | :------- | :--------------------------------- | :------- |
+| `authentication` | `string` | Your token                         | yes      |
+| `id`             | `string` | Id of the user you want to unblock | yes      |
+
