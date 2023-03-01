@@ -55,7 +55,7 @@
   - [Upload Profile Photo](#Upload-Profile-Photo)
   
   
-  - [Posts](#Posts-API-Refeference)
+- [Posts](#Posts-API-Refeference)
 
   - [Create Post](#Create-Post)
   - [Get All Posts](#Get-All-Posts)
