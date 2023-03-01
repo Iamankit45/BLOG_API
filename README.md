@@ -91,3 +91,25 @@ POST /api/v1/users/register
 
 The request body needs to be in JSON format.
 
+# **API Reference**
+
+## **User Login**
+
+```http
+POST /api/v1/users/login
+```
+
+| Parameter        | Type     | Description   | Required |
+| :--------------- | :------- | :------------ | :------- |
+| `authentication` | `string` | Your token    | no       |
+| `email`          | `string` | Your email    | yes      |
+| `password`       | `string` | Your password | yes      |
+
+Example request body:
+
+```javascript
+{
+  "email":"your email"
+  "password":"your password"
+}
+```
