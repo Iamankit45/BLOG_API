@@ -147,3 +147,21 @@ GET /api/v1/users/profile-viewers/:id
 | :--------------- | :------- | :------------------------------------------ | :------- |
 | `authentication` | `string` | Your token                                  | yes      |
 | `id`             | `string` | ID of the user you want to view his profile | yes      |
+
+
+#### **Following a user**
+
+```http
+GET /api/v1/users/following/:id
+```
+
+| Parameter        | Type     | Description                       | Required |
+| :--------------- | :------- | :-------------------------------- | :------- |
+| `authentication` | `string` | Your token                        | yes      |
+| `id`             | `string` | ID of the user you want to follow | yes      |
+
+
+
+
+
+
