@@ -387,3 +387,16 @@ Example request body:
   "photo":"photo",
 }
 ```
+
+## **Delete Post**
+
+```http
+  GET /api/v1/posts/dislikes/:id
+```
+
+| Parameter        | Type     | Description    | Required |
+| :--------------- | :------- | :------------- | :------- |
+| `authentication` | `string` | Your token     | yes      |
+| `id`             | `string` | ID of the post | yes      |
+
+
