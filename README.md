@@ -265,3 +265,12 @@ PUT /api/v1/users/admin-unblock/:id
 | `authentication` | `string` | Your token                         | yes      |
 | `id`             | `string` | Id of the user you want to unblock | yes      |
 
+## **Delete your account**
+
+```http
+  DELETE /api/v1/users/delete-account
+```
+
+| Parameter        | Type     | Description | Required |
+| :--------------- | :------- | :---------- | :------- |
+| `authentication` | `string` | Your token  | yes      |
