@@ -274,3 +274,16 @@ PUT /api/v1/users/admin-unblock/:id
 | Parameter        | Type     | Description | Required |
 | :--------------- | :------- | :---------- | :------- |
 | `authentication` | `string` | Your token  | yes      |
+
+
+
+## **Upload Profile Photo**
+
+```http
+  DELETE /api/v1/users/profile-photo-upload
+```
+
+| Parameter        | Type     | Description     | Required |
+| :--------------- | :------- | :-------------- | :------- |
+| `authentication` | `string` | Your token      | yes      |
+| `profilePhoto`   | `string` | Image to upload | yes      |
