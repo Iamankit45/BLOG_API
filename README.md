@@ -216,3 +216,24 @@ Example request body:
   "lastname":"value",
 }
 ```
+## **Block another user**
+
+```http
+PUT /api/v1/users/block/:id
+```
+
+| Parameter        | Type     | Description                      | Required |
+| :--------------- | :------- | :------------------------------- | :------- |
+| `authentication` | `string` | Your token                       | yes      |
+| `id`             | `string` | Id of the user you want to block | yes      |
+
+## **Unblock user**
+
+```http
+PUT /api/v1/users/unblock/:id
+```
+
+| Parameter        | Type     | Description                        | Required |
+| :--------------- | :------- | :--------------------------------- | :------- |
+| `authentication` | `string` | Your token                         | yes      |
+| `id`             | `string` | Id of the user you want to unblock | yes      |
