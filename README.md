@@ -174,3 +174,21 @@ GET /api/v1/users/unfollowing/:id
 | `id`             | `string` | ID of the user you want to follow | yes      |
 
 
+## **Update user password**
+
+```http
+PUT /api/v1/users/update-password
+```
+
+| Parameter        | Type     | Description         | Required |
+| :--------------- | :------- | :------------------ | :------- |
+| `authentication` | `string` | Your token          | yes      |
+| `password`       | `string` | Enter your password | yes      |
+
+Example request body:
+
+```javascript
+{
+  "password":"value"
+}
+```
