@@ -287,3 +287,32 @@ PUT /api/v1/users/admin-unblock/:id
 | :--------------- | :------- | :-------------- | :------- |
 | `authentication` | `string` | Your token      | yes      |
 | `profilePhoto`   | `string` | Image to upload | yes      |
+
+
+
+# **Posts API Refeference**
+
+## **Create Post**
+
+```http
+  POST /api/v1/posts
+```
+
+| Parameter        | Type     | Description        | Required |
+| :--------------- | :------- | :----------------- | :------- |
+| `authentication` | `string` | Your token         | yes      |
+| `title`          | `string` | Post title         | yes      |
+| `description`    | `string` | Post description   | yes      |
+| `category`       | `string` | ID of the category | yes      |
+| `photo`          | `string` | Image of the post  | yes      |
+
+Example request body:
+
+```javascript
+{
+  "title":"value",
+  "description":"value",
+  "category":"value",
+  "photo":"photo",
+}
+```
