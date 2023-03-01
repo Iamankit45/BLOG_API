@@ -192,3 +192,27 @@ Example request body:
   "password":"value"
 }
 ```
+
+
+## **Update your profile**
+
+```http
+PUT /api/v1/users
+```
+
+| Parameter        | Type     | Description          | Required |
+| :--------------- | :------- | :------------------- | :------- |
+| `authentication` | `string` | Your token           | yes      |
+| `email`          | `string` | Enter your email     | no       |
+| `firstname`      | `string` | Enter your firstname | no       |
+| `lastname`       | `string` | Enter your lastname  | no       |
+
+Example request body:
+
+```javascript
+{
+  "email":"value",
+  "firstname":"value",
+  "lastname":"value",
+}
+```
