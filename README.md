@@ -162,6 +162,15 @@ GET /api/v1/users/following/:id
 
 
 
+## **UnFollowing a user**
 
+```http
+GET /api/v1/users/unfollowing/:id
+```
+
+| Parameter        | Type     | Description                       | Required |
+| :--------------- | :------- | :-------------------------------- | :------- |
+| `authentication` | `string` | Your token                        | yes      |
+| `id`             | `string` | ID of the user you want to follow | yes      |
 
 
