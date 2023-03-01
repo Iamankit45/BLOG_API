@@ -113,3 +113,14 @@ Example request body:
   "password":"your password"
 }
 ```
+
+## **get my profile**
+
+```http
+GET /api/v1/users/profile
+```
+
+| Parameter        | Type     | Description | Required |
+| :--------------- | :------- | :---------- | :------- |
+| `authentication` | `string` | Your token  | yes      |
+
