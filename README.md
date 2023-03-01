@@ -400,3 +400,17 @@ Example request body:
 | `id`             | `string` | ID of the post | yes      |
 
 
+# **Comment API Reference**
+
+## **Create Comment**
+
+```http
+  POST /api/v1/comments/:id
+```
+
+| Parameter        | Type     | Description    | Required |
+| :--------------- | :------- | :------------- | :------- |
+| `authentication` | `string` | Your token     | yes      |
+| `id`             | `string` | ID of the post | yes      |
+
+
