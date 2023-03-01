@@ -327,4 +327,13 @@ Example request body:
 | `authentication` | `string` | Your token  | no       |
 
 
+## **Get Single Post**
 
+```http
+  GET /api/v1/posts/:id
+```
+
+| Parameter        | Type     | Description    | Required |
+| :--------------- | :------- | :------------- | :------- |
+| `authentication` | `string` | Your token     | yes      |
+| `id`             | `string` | ID of the post | yes      |
