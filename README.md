@@ -424,3 +424,13 @@ Example request body:
 | `authentication` | `string` | Your token        | yes      |
 | `id`             | `string` | ID of the comment | yes      |
 
+## **Update Comment**
+
+```http
+  PUT /api/v1/comments/:id
+```
+
+| Parameter        | Type     | Description    | Required |
+| :--------------- | :------- | :------------- | :------- |
+| `authentication` | `string` | Your token     | yes      |
+| `id`             | `string` | ID of the post | yes      |
