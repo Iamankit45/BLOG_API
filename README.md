@@ -79,3 +79,15 @@ The endpoints that require authentication expect a bearer token sent in the `Aut
 **Example**:
 
 `Authorization: Bearer YOUR TOKEN`
+
+
+
+
+## Register a new API client
+
+```http
+POST /api/v1/users/register
+```
+
+The request body needs to be in JSON format.
+
