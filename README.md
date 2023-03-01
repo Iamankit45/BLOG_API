@@ -413,4 +413,14 @@ Example request body:
 | `authentication` | `string` | Your token     | yes      |
 | `id`             | `string` | ID of the post | yes      |
 
+## **Delete Comment**
+
+```http
+  DELETE /api/v1/comments/:id
+```
+
+| Parameter        | Type     | Description       | Required |
+| :--------------- | :------- | :---------------- | :------- |
+| `authentication` | `string` | Your token        | yes      |
+| `id`             | `string` | ID of the comment | yes      |
 
