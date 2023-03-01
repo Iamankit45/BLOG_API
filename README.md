@@ -135,3 +135,15 @@ GET /api/v1/users/users
 | :--------------- | :------- | :---------- | :------- |
 | `authentication` | `string` | Your token  | no       |
 
+
+
+## **view a user profile**
+
+```http
+GET /api/v1/users/profile-viewers/:id
+```
+
+| Parameter        | Type     | Description                                 | Required |
+| :--------------- | :------- | :------------------------------------------ | :------- |
+| `authentication` | `string` | Your token                                  | yes      |
+| `id`             | `string` | ID of the user you want to view his profile | yes      |
