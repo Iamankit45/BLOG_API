@@ -362,3 +362,28 @@ Example request body:
 | `id`             | `string` | ID of the post | yes      |
 
 
+## **Update Post**
+
+```http
+  PUT /api/v1/posts/:id
+```
+
+| Parameter        | Type     | Description             | Required |
+| :--------------- | :------- | :---------------------- | :------- |
+| `authentication` | `string` | Your token              | yes      |
+| `id`             | `string` | ID of the post          | yes      |
+| `title`          | `string` | title of the post       | yes      |
+| `description`    | `string` | description of the post | yes      |
+| `category`       | `string` | category of the post    | yes      |
+| `photo`          | `string` | photo of the post       | yes      |
+
+Example request body:
+
+```javascript
+{
+  "title":"value",
+  "description":"value",
+  "category":"value",
+  "photo":"photo",
+}
+```
