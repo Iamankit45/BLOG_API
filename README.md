@@ -316,3 +316,15 @@ Example request body:
   "photo":"photo",
 }
 ```
+## **Get All Posts**
+
+```http
+  GET /api/v1/posts
+```
+
+| Parameter        | Type     | Description | Required |
+| :--------------- | :------- | :---------- | :------- |
+| `authentication` | `string` | Your token  | no       |
+
+
+
