@@ -337,3 +337,28 @@ Example request body:
 | :--------------- | :------- | :------------- | :------- |
 | `authentication` | `string` | Your token     | yes      |
 | `id`             | `string` | ID of the post | yes      |
+
+
+## **Toggle Post like**
+
+```http
+  GET /api/v1/postslikes/:id
+```
+
+| Parameter        | Type     | Description    | Required |
+| :--------------- | :------- | :------------- | :------- |
+| `authentication` | `string` | Your token     | yes      |
+| `id`             | `string` | ID of the post | yes      |
+
+## **Toggle Post dislike**
+
+```http
+  GET /api/v1/posts/dislikes/:id
+```
+
+| Parameter        | Type     | Description    | Required |
+| :--------------- | :------- | :------------- | :------- |
+| `authentication` | `string` | Your token     | yes      |
+| `id`             | `string` | ID of the post | yes      |
+
+
