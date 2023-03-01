@@ -124,3 +124,14 @@ GET /api/v1/users/profile
 | :--------------- | :------- | :---------- | :------- |
 | `authentication` | `string` | Your token  | yes      |
 
+
+## **Get all users**
+
+```http
+GET /api/v1/users/users
+```
+
+| Parameter        | Type     | Description | Required |
+| :--------------- | :------- | :---------- | :------- |
+| `authentication` | `string` | Your token  | no       |
+
