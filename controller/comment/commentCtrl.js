@@ -48,9 +48,12 @@ await post.save({validateBeforeSave:false});
   //GET/api/v1/comments/:id
   const getCommentCtrl = async (req,res,next) => {
     try {
+
+      const comment = await Comment.findById(req.params.id);
+
       res.json({
         status: "success",
-        data: "comments route ",
+        data: comment,
       });
     } catch (error) {
       next(appErr(error.message))
