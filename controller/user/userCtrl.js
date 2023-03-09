@@ -89,6 +89,24 @@ const userProfileCtrl = async (req, res, next) => {
    }
 };
 
+
+const userProfileByNameCtrl = async (req, res, next) => {
+  // console.log(req.userAuth);
+    
+  try {
+    const token = getTokenFromHeader(req);
+    // console.log(token);
+    const user = await User.findbyId(req.userAuth);
+    res.json({
+      status: "success",
+      data: user,
+    });
+  } catch (error)  {
+    next(appErr(error.message))
+   }
+};
+
+
 const whoViewedMyProfileCtrl = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
@@ -441,4 +459,5 @@ module.exports = {
   adminBlockUsersCtrl,
   adminUnBlockUsersCtrl,
   updatePasswordCtrl,
+  userProfileByNameCtrl,
 };

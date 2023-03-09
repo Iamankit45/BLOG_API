@@ -16,7 +16,8 @@ const {
   unblockUserCtrl,
   adminBlockUsersCtrl,
   adminUnBlockUsersCtrl,
-  updatePasswordCtrl
+  updatePasswordCtrl,
+  userProfileByNameCtrl
 } = require("../../controller/user/userCtrl");
 const isLogin=require("../../middlewares/isLogin");
 const isAdmin=require("../../middlewares/isAdmin");
@@ -31,6 +32,10 @@ userRouter.post("/login", userLoginCtrl);
 
 //GET/api/v1/users/:id
 userRouter.get("/profile/",isLogin,userProfileCtrl);
+
+
+//GET/api/v1/users/:id
+userRouter.get("/profileByName/",isLogin,userProfileByNameCtrl);
 
 //GET/api/v1/users/
 userRouter.get("/", usersCtrl);
