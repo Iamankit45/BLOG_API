@@ -11,6 +11,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Last Name is required"],
     },
+
+    userName: {
+      type: String,
+      unique: true,
+      required: [true, "userName is required"],
+    },
+
     profilePhoto: {
       type: String,
     },
@@ -81,13 +88,11 @@ const userSchema = new mongoose.Schema(
     //   },
     // ],
 
-    userAward:
-      {
-        type: String,
-        enum: ["Bronze", "Silver", "Gold"],
-        default: "Bronze",
-      },
-    
+    userAward: {
+      type: String,
+      enum: ["Bronze", "Silver", "Gold"],
+      default: "Bronze",
+    },
   },
   {
     timestamps: true,
@@ -100,16 +105,15 @@ const userSchema = new mongoose.Schema(
 //pre -before record is saved
 
 userSchema.pre("findOne", async function (next) {
-
-//populate this post
-this.populate('posts');
+  //populate this post
+  this.populate("posts");
 
   const userId = this._conditions._id;
   const posts = await Post.find({ user: userId });
 
   const lastPost = posts[posts.length - 1];
 
-  const lastPostDate = new Date(lastPost ?.createdAt);
+  const lastPostDate = new Date(lastPost?.createdAt);
 
   const lastPostDateStr = lastPostDate.toDateString();
   console.log(lastPostDateStr);
@@ -127,7 +131,7 @@ this.populate('posts');
   const diff = currentDate - lastPostDate;
   const diffInDays = diff / (1000 * 3600 * 24);
 
-  if (diffInDays >30) {
+  if (diffInDays > 30) {
     userSchema.virtual("isInactive").get(function () {
       return true;
     });
@@ -141,28 +145,27 @@ this.populate('posts');
     await User.findByIdAndUpdate(userId, { isBlocked: false }, { new: true });
   }
 
+  //-----last active date------
 
-//-----last active date------
+  const daysAgo = Math.floor(diffInDays);
+  console.log(daysAgo);
 
-const daysAgo=Math.floor(diffInDays)
-console.log(daysAgo);
+  userSchema.virtual("lastActive").get(function () {
+    //check if daysAgo is less than 0
+    if (daysAgo <= 0) {
+      return "Today";
+    }
+    //check if daysAgo is equal to 1
+    if (daysAgo === 1) {
+      return "Yesterday";
+    }
+    //check if daysAgo is greater than 1
+    if (daysAgo > 1) {
+      return `${daysAgo} days ago`;
+    }
+  });
 
-userSchema.virtual("lastActive").get(function () {
-  //check if daysAgo is less than 0
-  if (daysAgo <= 0) {
-    return "Today";
-  }
-  //check if daysAgo is equal to 1
-  if (daysAgo === 1) {
-    return "Yesterday";
-  }
-  //check if daysAgo is greater than 1
-  if (daysAgo > 1) {
-    return `${daysAgo} days ago`;
-  }
-});
-
-//----------------------------------------------
+  //----------------------------------------------
   //Update userAward based on the number of posts
   //--------------------------------------------
   //get the number of posts
@@ -206,8 +209,6 @@ userSchema.virtual("lastActive").get(function () {
   }
   next();
 });
-
-
 
 //get fullname
 

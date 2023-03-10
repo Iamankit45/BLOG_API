@@ -9,7 +9,7 @@ const getTokenFromHeader = require("../../utils/getTokenFromHeader");
 const { findById } = require("../../model/post/post");
 
 const userRegisterCtrl = async (req, res, next) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password,userName} = req.body;
 
   try {
     //checking if email is already exist
@@ -27,6 +27,7 @@ const userRegisterCtrl = async (req, res, next) => {
       lastName,
       email,
       password: hashedPassword,
+      userName
     });
 
     res.json({
