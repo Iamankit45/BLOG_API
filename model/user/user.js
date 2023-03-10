@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema(
       required: [true, "userName is required"],
     },
 
+//will use this username paramtere as searching user
+
     profilePhoto: {
       type: String,
     },

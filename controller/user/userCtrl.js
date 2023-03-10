@@ -90,14 +90,15 @@ const userProfileCtrl = async (req, res, next) => {
   }
 };
 
-const userProfileByNameCtrl = async (req, res, next) => {
+const userProfileByUserNameCtrl = async (req, res, next) => {
+  //as username is unique
   // console.log(req.userAuth);
-  const name = req.params;
-  console.log(name.id);
+  const UserName = req.params;
+  // console.log(name.id);
   try {
     const token = getTokenFromHeader(req);
     // console.log(token);
-    const user = await User.find({ firstName: name.id });
+    const user = await User.find({ userName: UserName.id });
 
     res.json({
       status: "success",
@@ -457,5 +458,5 @@ module.exports = {
   adminBlockUsersCtrl,
   adminUnBlockUsersCtrl,
   updatePasswordCtrl,
-  userProfileByNameCtrl,
+  userProfileByUserNameCtrl,
 };
