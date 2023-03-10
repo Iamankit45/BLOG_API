@@ -11,4 +11,5 @@ const dbConnect = async () => {
   }
 };
 
-dbConnect();
+module.exports=dbConnect;
+// dbConnect();

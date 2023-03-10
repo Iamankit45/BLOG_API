@@ -38,7 +38,7 @@ const userRegisterCtrl = async (req, res, next) => {
   }
 };
 
-const userLoginCtrl = async (req, res,next) => {
+const userLoginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     //checking if email exist
@@ -69,7 +69,7 @@ const userLoginCtrl = async (req, res,next) => {
       },
     });
   } catch (error) {
-   next(appErr(error.message))
+    next(appErr(error.message));
   }
 };
 
@@ -84,28 +84,28 @@ const userProfileCtrl = async (req, res, next) => {
       status: "success",
       data: user,
     });
-  } catch (error)  {
-    next(appErr(error.message))
-   }
+  } catch (error) {
+    next(appErr(error.message));
+  }
 };
-
 
 const userProfileByNameCtrl = async (req, res, next) => {
   // console.log(req.userAuth);
-    
+  const name = req.params;
+  console.log(name.id);
   try {
     const token = getTokenFromHeader(req);
     // console.log(token);
-    const user = await User.findbyId(req.userAuth);
+    const user = await User.find({ firstName: name.id });
+
     res.json({
       status: "success",
       data: user,
     });
-  } catch (error)  {
-    next(appErr(error.message))
-   }
+  } catch (error) {
+    next(appErr(error.message));
+  }
 };
-
 
 const whoViewedMyProfileCtrl = async (req, res, next) => {
   try {
@@ -134,8 +134,8 @@ const whoViewedMyProfileCtrl = async (req, res, next) => {
       }
     }
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
 
 const followingCtrl = async (req, res, next) => {
@@ -162,9 +162,9 @@ const followingCtrl = async (req, res, next) => {
         });
       }
     }
-  } catch (error)  {
-    next(appErr(error.message))
-   }
+  } catch (error) {
+    next(appErr(error.message));
+  }
 };
 
 const unFollowCtrl = async (req, res, next) => {
@@ -198,8 +198,8 @@ const unFollowCtrl = async (req, res, next) => {
       }
     }
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
 
 //block
@@ -280,8 +280,8 @@ const adminBlockUsersCtrl = async (req, res, next) => {
       data: " u have succesfully blocked this user",
     });
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
 
 const adminUnBlockUsersCtrl = async (req, res, next) => {
@@ -300,8 +300,8 @@ const adminUnBlockUsersCtrl = async (req, res, next) => {
       data: " u have succesfully unblocked this user",
     });
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
 
 const usersCtrl = async (req, res) => {
@@ -316,23 +316,21 @@ const usersCtrl = async (req, res) => {
   }
 };
 
-const deleteUserAccountCtrl = async (req, res,next) => {
-
-
+const deleteUserAccountCtrl = async (req, res, next) => {
   try {
-const userToDelete= await User.findById(req.userAuth);
+    const userToDelete = await User.findById(req.userAuth);
 
-await Post.deleteMany({user:req.userAuth});
-await Comment.deleteMany({user:req.userAuth});
-await Category.deleteMany({user:req.userAuth});
-await userToDelete.delete();
+    await Post.deleteMany({ user: req.userAuth });
+    await Comment.deleteMany({ user: req.userAuth });
+    await Category.deleteMany({ user: req.userAuth });
+    await userToDelete.delete();
     res.json({
       status: "success",
       data: "u have successfully deleted your account ",
     });
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
 
 const updateUserCtrl = async (req, res, next) => {
@@ -370,12 +368,12 @@ const updateUserCtrl = async (req, res, next) => {
       status: "success",
       data: user,
     });
-  } catch (error)  {
-    next(appErr(error.message))
-   }
+  } catch (error) {
+    next(appErr(error.message));
+  }
 };
 
-const updatePasswordCtrl = async (req, res,next) => {
+const updatePasswordCtrl = async (req, res, next) => {
   const { password } = req.body;
   try {
     if (password) {
@@ -387,7 +385,7 @@ const updatePasswordCtrl = async (req, res,next) => {
       const user = await User.findByIdAndUpdate(
         req.userAuth,
         {
-          password:hashedPassword,
+          password: hashedPassword,
         },
         {
           new: true,
@@ -399,16 +397,15 @@ const updatePasswordCtrl = async (req, res,next) => {
         status: "success",
         data: "password changed succcesfully",
       });
-    }
-    else{
-      return next(appErr("please provide password field"))
+    } else {
+      return next(appErr("please provide password field"));
     }
   } catch (error) {
-    next(appErr(error.message))
-   }
+    next(appErr(error.message));
+  }
 };
 
-const profilePhotoUploadCtrl = async (req, res,next) => {
+const profilePhotoUploadCtrl = async (req, res, next) => {
   // console.log(req.file)
   try {
     const userToUpdate = await User.findById(req.userAuth);

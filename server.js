@@ -35,5 +35,9 @@ app.use("*", (req, res) => {
 });
 
 app.listen(port, () => {
+
   console.log(`app is listening on ${port}`);
+  dbConnect()
 });
+
+

@@ -35,7 +35,7 @@ userRouter.get("/profile/",isLogin,userProfileCtrl);
 
 
 //GET/api/v1/users/:id
-userRouter.get("/profileByName/",isLogin,userProfileByNameCtrl);
+userRouter.get("/profileByName/:id",isLogin,userProfileByNameCtrl);
 
 //GET/api/v1/users/
 userRouter.get("/", usersCtrl);
