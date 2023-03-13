@@ -3,14 +3,10 @@ const Post = require("../post/post");
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    name: {
       type: String,
-      required: [true, "First Name is required"],
-    },
-    lastName: {
-      type: String,
-      required: [true, "Last Name is required"],
-    },
+      required: [true, 'Please tell us your name! ']
+  },
 
     userName: {
       type: String,
@@ -32,24 +28,25 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
     },
 
-    isBlocked: {
-      type: Boolean,
-      default: false,
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    role: {
-      type: String,
-      enum: ["Admin", "Guest", "Editor"],
-    },
-    viewers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    // isBlocked: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // isAdmin: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // role: {
+    //   type: String,
+    //   default:'User',
+    //   enum: ["Admin", "Guest", "Editor"],
+    // },
+    // viewers: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    //   },
+    // ],
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -75,20 +72,20 @@ const userSchema = new mongoose.Schema(
         ref: "Comment",
       },
     ],
-    blocked: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    // blocked: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    //   },
+    // ],
 
-    plan: [
-      {
-        type: String,
-        enum: ["Free", "Premium", "Pro"],
-        default: "Free",
-      },
-    ],
+    // plan: [
+    //   {
+    //     type: String,
+    //     enum: ["Free", "Premium", "Pro"],
+    //     default: "Free",
+    //   },
+    // ],
 
     userAward: {
       type: String,

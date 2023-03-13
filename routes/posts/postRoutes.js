@@ -22,7 +22,7 @@ const upload = multer({ storage });
 
 postRouter.post("/", isLogin, upload.single("image"), createPostCtrl);
 
-postRouter.get("/", isLogin, fetchPostCtrl);
+postRouter.get("/",fetchPostCtrl);
 
 postRouter.get("/likes/:id", isLogin, toggleLikesPostCtrl);
 
