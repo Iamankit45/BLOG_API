@@ -82,13 +82,13 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
-    // plan: [
-    //   {
-    //     type: String,
-    //     enum: ["Free", "Premium", "Pro"],
-    //     default: "Free",
-    //   },
-    // ],
+    plan: [
+      {
+        type: String,
+        enum: ["Free", "Premium", "Pro"],
+        default: "Free",
+      },
+    ],
 
     userAward: {
       type: String,
