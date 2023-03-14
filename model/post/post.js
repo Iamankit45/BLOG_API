@@ -66,6 +66,11 @@ const postSchema=new mongoose.Schema({
     type: String,
     // required: [true, "Post Image is required"],
   },
+  ContainImage:{
+    type:Boolean,
+    default: false,
+    required: [true, "Please specify that your post contains an image or not"]
+  }
 },
 {
   timestamps: true,
