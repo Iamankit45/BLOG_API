@@ -3,10 +3,14 @@ const Post = require("../post/post");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, 'Please tell us your name! ']
-  },
+      required: [true, "First Name is required"],
+    },
+    lastName: {
+      type: String,
+      required: [true, "Last Name is required"],
+    },
 
     userName: {
       type: String,
@@ -28,25 +32,24 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
     },
 
-    // isBlocked: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // isAdmin: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // role: {
-    //   type: String,
-    //   default:'User',
-    //   enum: ["Admin", "Guest", "Editor"],
-    // },
-    // viewers: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //   },
-    // ],
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    role: {
+      type: String,
+      enum: ["Admin", "Guest", "Editor"],
+    },
+    viewers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -72,20 +75,20 @@ const userSchema = new mongoose.Schema(
         ref: "Comment",
       },
     ],
-    // blocked: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //   },
-    // ],
+    blocked: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
 
-    // plan: [
-    //   {
-    //     type: String,
-    //     enum: ["Free", "Premium", "Pro"],
-    //     default: "Free",
-    //   },
-    // ],
+    plan: [
+      {
+        type: String,
+        enum: ["Free", "Premium", "Pro"],
+        default: "Free",
+      },
+    ],
 
     userAward: {
       type: String,
@@ -115,7 +118,7 @@ userSchema.pre("findOne", async function (next) {
   const lastPostDate = new Date(lastPost?.createdAt);
 
   const lastPostDateStr = lastPostDate.toDateString();
-  console.log(lastPostDateStr);
+  // console.log(lastPostDateStr);
 
   //add virtuals to the schema
 
@@ -147,7 +150,7 @@ userSchema.pre("findOne", async function (next) {
   //-----last active date------
 
   const daysAgo = Math.floor(diffInDays);
-  console.log(daysAgo);
+  // console.log(daysAgo);
 
   userSchema.virtual("lastActive").get(function () {
     //check if daysAgo is less than 0

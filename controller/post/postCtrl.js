@@ -4,7 +4,7 @@ const Category = require("../../model/category/category");
 const appErr = require("../../utils/appErr");
 
 const createPostCtrl = async (req, res, next) => {
-  const { title,subtitle,category,content,minute_read,ContainImage, } = req.body;
+  const { title, description, category } = req.body;
 
   try {
     const author = await User.findById(req.userAuth);
@@ -14,15 +14,35 @@ const createPostCtrl = async (req, res, next) => {
       return next(appErr("access denied ,account blocked", 403));
     }
 
+    const TITLE = title;
+
+    let ltext = TITLE;
+    let text = ltext.toLowerCase();
+    let Len = text.length;
+    console.log(Len);
+    console.log(TITLE);
+    let str = "";
+
+    for (let i = 0; i < Len; i++) {
+      if (
+        (text[i] >= "A" && text[i] <= "Z") ||
+        (text[i] >= "a" && text[i] <= "z")
+      ) {
+        str = str + text[i];
+      } else {
+        str = str + "-";
+      }
+    }
+
+    console.log(str);
+
+    url_title = str;
     const postCreated = await Post.create({
       title,
-      subtitle,
-   
+      description,
       user: author._id,
       category,
-      content,
-      minute_read,
-      ContainImage,
+      url_title,
       photo: req && req.file && req.file.path,
     });
 
@@ -41,17 +61,17 @@ const createPostCtrl = async (req, res, next) => {
 };
 
 //for all post
-const fetchPostCtrl = async (req, res,next) => {
+const fetchPostCtrl = async (req, res, next) => {
   try {
     const posts = await Post.find({})
       .populate("user")
-      // .populate("category", "title");
+      .populate("category", "title");
 
     // jo user hume block kr chuka hai ..uska post hu nhi dekh payenge ....
     const filteredPost = posts.filter((post) => {
       const blockedUsers = post.user.blocked;
       const isBlocked = blockedUsers.includes(req.userAuth);
-      console.log(isBlocked);
+      // console.log(isBlocked);
       return isBlocked ? null : post;
     });
 
@@ -65,7 +85,7 @@ const fetchPostCtrl = async (req, res,next) => {
 };
 
 //toogle likes
-const toggleLikesPostCtrl = async (req, res,next) => {
+const toggleLikesPostCtrl = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -94,7 +114,7 @@ const toggleLikesPostCtrl = async (req, res,next) => {
 
 //toggle dislikes
 
-const toggleDisLikesPostCtrl = async (req, res,next) => {
+const toggleDisLikesPostCtrl = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -121,7 +141,6 @@ const toggleDisLikesPostCtrl = async (req, res,next) => {
   }
 };
 
-
 // for viewing single post
 const postDetailsCtrl = async (req, res) => {
   try {
@@ -143,11 +162,6 @@ const postDetailsCtrl = async (req, res) => {
   }
 };
 
-
-
-
-
-
 //Delete/api/v1/posts/:id
 const deletePostCtrl = async (req, res, next) => {
   try {
@@ -167,7 +181,7 @@ const deletePostCtrl = async (req, res, next) => {
 };
 //put/api/v1/posts/:id
 const updatePostCtrl = async (req, res, next) => {
-  const { title, description, category,photo } = req.body;
+  const { title, description, category, photo } = req.body;
   try {
     const post = await Post.findById(req.params.id);
 
@@ -197,7 +211,7 @@ const updatePostCtrl = async (req, res, next) => {
 
 module.exports = {
   createPostCtrl,
-  
+
   deletePostCtrl,
   updatePostCtrl,
 

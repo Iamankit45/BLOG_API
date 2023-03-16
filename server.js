@@ -5,7 +5,7 @@ dotenv.config({ path: "./config/config.env" });
 const dbConnect = require("./config/db");
 const app = express();
 const globalErrHandler = require("./middlewares/globalErrHandler");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 //middleware
 
