@@ -76,7 +76,7 @@
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://Iamankit45/BLOG_API
 ```
 
 Go to the project directory
